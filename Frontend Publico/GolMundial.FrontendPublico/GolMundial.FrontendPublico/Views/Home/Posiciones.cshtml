@@ -1,0 +1,43 @@
+﻿@model List<GolMundial.FrontendPublico.Models.Posicion>
+
+@{
+    ViewData["Title"] = "Posiciones";
+}
+
+<h2 class="mb-4">Tabla de Posiciones</h2>
+
+@foreach (var grupo in Model.GroupBy(p => p.GrupoCodigo).OrderBy(g => g.Key))
+{
+    <h4 class="mt-4">Grupo @grupo.Key</h4>
+    <table class="table table-striped table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>Selección</th>
+                <th>PJ</th>
+                <th>PG</th>
+                <th>PE</th>
+                <th>PP</th>
+                <th>GF</th>
+                <th>GC</th>
+                <th>Dif</th>
+                <th>Pts</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var pos in grupo.OrderByDescending(p => p.Puntos).ThenByDescending(p => p.Dif))
+            {
+                <tr>
+                    <td>@pos.Nombre (@pos.CodigoFifa)</td>
+                    <td>@pos.Pj</td>
+                    <td>@pos.Pg</td>
+                    <td>@pos.Pe</td>
+                    <td>@pos.Pp</td>
+                    <td>@pos.Gf</td>
+                    <td>@pos.Gc</td>
+                    <td>@pos.Dif</td>
+                    <td><strong>@pos.Puntos</strong></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

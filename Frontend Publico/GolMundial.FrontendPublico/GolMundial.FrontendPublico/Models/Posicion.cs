@@ -2,14 +2,17 @@
 {
     public class Posicion
     {
-        public string Grupo { get; set; }
-        public string Seleccion { get; set; }
-        public int PartidosJugados { get; set; }
-        public int Ganados { get; set; }
-        public int Empatados { get; set; }
-        public int Perdidos { get; set; }
-        public int GolesFavor { get; set; }
-        public int GolesContra { get; set; }
+        public string GrupoCodigo { get; set; }
+        public int SeleccionId { get; set; }
+        public string CodigoFifa { get; set; }
+        public string Nombre { get; set; }
+        public int Pj { get; set; }
+        public int Pg { get; set; }
+        public int Pe { get; set; }
+        public int Pp { get; set; }
+        public int Gf { get; set; }
+        public int Gc { get; set; }
+        public int Dif { get; set; }
         public int Puntos { get; set; }
     }
 }

@@ -1,0 +1,43 @@
+﻿@model List<GolMundial.FrontendPublico.Models.EstadisticaSeleccion>
+
+@{
+    ViewData["Title"] = "Estadísticas";
+}
+
+<h2 class="mb-4">Estadísticas por Selección</h2>
+
+<table class="table table-striped table-hover">
+    <thead class="table-dark">
+        <tr>
+            <th>Selección</th>
+            <th>Confederación</th>
+            <th>PJ</th>
+            <th>G</th>
+            <th>E</th>
+            <th>P</th>
+            <th>GF</th>
+            <th>GC</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var est in Model)
+        {
+            <tr>
+                <td>
+                    @est.Nombre (@est.CodigoFifa)
+                    @if (est.EsAnfitrion)
+                    {
+                        <span class="badge bg-warning text-dark">Anfitrión</span>
+                    }
+                </td>
+                <td>@est.Confederacion</td>
+                <td>@est.PartidosJugados</td>
+                <td>@est.Ganados</td>
+                <td>@est.Empatados</td>
+                <td>@est.Perdidos</td>
+                <td>@est.GolesFavor</td>
+                <td>@est.GolesContra</td>
+            </tr>
+        }
+    </tbody>
+</table>
