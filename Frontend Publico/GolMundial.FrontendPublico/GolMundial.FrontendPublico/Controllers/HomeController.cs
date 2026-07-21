@@ -8,11 +8,15 @@ namespace GolMundial.FrontendPublico.Controllers
     {
         private readonly IPartidoService _partidoService;
         private readonly IPosicionService _posicionService;
-
-        public HomeController(IPartidoService partidoService, IPosicionService posicionService)
+        private readonly IEstadisticaService _estadisticaService;
+        public HomeController(
+            IPartidoService partidoService,
+            IPosicionService posicionService,
+            IEstadisticaService estadisticaService)
         {
             _partidoService = partidoService;
             _posicionService = posicionService;
+            _estadisticaService = estadisticaService;
         }
 
         // Calendario del torneo (página de inicio)
@@ -28,24 +32,9 @@ namespace GolMundial.FrontendPublico.Controllers
             return View(posiciones);
         }
 
-        public IActionResult Estadisticas()
+        public async Task<IActionResult> Estadisticas()
         {
-            var estadisticas = new List<EstadisticaSeleccion>
-            {
-                new EstadisticaSeleccion{
-                    SeleccionId = 1, CodigoFifa = "ARG", Nombre = "Argentina",
-                    Confederacion = "CONMEBOL", EsAnfitrion = false,
-                    PartidosJugados = 3, Ganados = 2, Empatados = 1, Perdidos = 0,
-                    GolesFavor = 5, GolesContra = 1
-                },
-                new EstadisticaSeleccion{
-                    SeleccionId = 3, CodigoFifa = "BRA", Nombre = "Brasil",
-                    Confederacion = "CONMEBOL", EsAnfitrion = false,
-                    PartidosJugados = 3, Ganados = 1, Empatados = 2, Perdidos = 0,
-                    GolesFavor = 4, GolesContra = 2
-                }
-            };
-
+            var estadisticas = await _estadisticaService.ObtenerTodasAsync();
             return View(estadisticas);
         }
 
