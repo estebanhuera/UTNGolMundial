@@ -1,0 +1,48 @@
+﻿@model LoginInput
+@{
+    ViewData["Title"] = "Iniciar sesión";
+}
+
+<div class="row justify-content-center mt-4">
+    <div class="col-md-5">
+        <div class="card shadow-sm">
+            <div class="card-header text-white fw-bold" style="background-color:#0b3d2e;">
+                Iniciar sesión
+            </div>
+            <div class="card-body">
+                <form asp-action="Login" method="post">
+                    <input type="hidden" asp-for="ReturnUrl" />
+
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-2"></div>
+
+                    <div class="mb-3">
+                        <label asp-for="Email" class="form-label">Email</label>
+                        <input asp-for="Email" class="form-control" placeholder="messi@utn.com" />
+                        <span asp-validation-for="Email" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Password" class="form-label">Contraseña</label>
+                        <input asp-for="Password" class="form-control" />
+                        <span asp-validation-for="Password" class="text-danger small"></span>
+                    </div>
+
+                    <button type="submit" class="btn w-100 text-white fw-bold"
+                            style="background-color:#0b3d2e;">
+                        Entrar
+                    </button>
+                </form>
+
+                <hr />
+                <p class="text-center mb-0">
+                    ¿No tienes cuenta?
+                    <a asp-action="Registro" asp-route-returnUrl="@Model.ReturnUrl">Registrate</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
