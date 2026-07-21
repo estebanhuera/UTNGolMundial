@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using GolMundial.FrontendPublico.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GolMundial.FrontendPublico.Controllers
@@ -6,11 +7,25 @@ namespace GolMundial.FrontendPublico.Controllers
     [Authorize]
     public class PrediccionesController : Controller
     {
-        [HttpGet]
-        public IActionResult Nueva(int partidoId)
+        private readonly IPartidoService _partidoService;
+
+        public PrediccionesController(IPartidoService partidoService)
         {
-            ViewData["PartidoId"] = partidoId;
-            return View();
+            _partidoService = partidoService;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Nueva(int partidoId)
+        {
+            var partido = await _partidoService.ObtenerPorIdAsync(partidoId);
+
+            if (partido is null)
+                return NotFound();
+
+            if (partido.Estado != "PROGRAMADO")
+                return RedirectToAction("Index", "Home");
+
+            return View(partido);
         }
     }
 }

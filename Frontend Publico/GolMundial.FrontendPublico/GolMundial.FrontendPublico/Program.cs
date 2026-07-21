@@ -21,6 +21,7 @@ namespace GolMundial.FrontendPublico
             });
 
             builder.Services.AddSingleton<IUsuarioService, FakeUsuarioServices>();
+            builder.Services.AddSingleton<IPartidoService, FakePartidoService>();
             var app = builder.Build();
             
             // Configure the HTTP request pipeline.

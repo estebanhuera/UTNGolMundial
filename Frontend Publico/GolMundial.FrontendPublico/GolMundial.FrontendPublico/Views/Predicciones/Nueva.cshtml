@@ -1,11 +1,22 @@
-﻿@{
+﻿@model Partido
+@{
     ViewData["Title"] = "Nueva predicción";
 }
 
-<div class="alert alert-success mt-4">
-    <h4>¡Llegaste autenticado!</h4>
-    <p class="mb-0">
-        Usuario: <strong>@User.Identity?.Name</strong><br />
-        Partido a predecir: <strong>#@ViewData["PartidoId"]</strong>
-    </p>
+<div class="card shadow-sm mt-4">
+    <div class="card-header text-white fw-bold" style="background-color:#0b3d2e;">
+        Predecir partido
+    </div>
+    <div class="card-body">
+        <h4 class="mb-3">@Model.EquipoLocal vs @Model.EquipoVisitante</h4>
+
+        <p class="mb-1"><strong>Fecha:</strong> @Model.FechaHora.ToLocalTime().ToString("dd/MM/yyyy HH:mm")</p>
+        <p class="mb-1"><strong>Sede:</strong> @Model.Sede</p>
+        <p class="mb-3"><strong>Fase:</strong> @Model.Fase — Grupo @Model.GrupoCodigo</p>
+
+        <div class="alert alert-info mb-0">
+            El formulario de predicción queda pendiente hasta tener el backend de apuestas.
+            Sesión activa como <strong>@User.Identity?.Name</strong>.
+        </div>
+    </div>
 </div>

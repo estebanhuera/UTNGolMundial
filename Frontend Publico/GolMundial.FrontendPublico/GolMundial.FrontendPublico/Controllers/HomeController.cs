@@ -1,41 +1,22 @@
 using GolMundial.FrontendPublico.Models;
+using GolMundial.FrontendPublico.Services;
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
 
 namespace GolMundial.FrontendPublico.Controllers
 {
-
     public class HomeController : Controller
     {
-        // Calendario del torneo (página de inicio)
-        public IActionResult Index()
-        {
-            var partidos = new List<Partido>
-            {
-                new Partido {
-            Id = 1, NumeroPartidoFifa = 1,
-            EquipoLocal = "Argentina", EquipoVisitante = "Brasil",
-            FechaHora = DateTime.UtcNow.AddDays(2),
-            Sede = "Estadio Azteca", GrupoCodigo = "A", Fase = "GRUPOS",
-            Estado = "PROGRAMADO"
-        },
-        new Partido {
-            Id = 2, NumeroPartidoFifa = 2,
-            EquipoLocal = "España", EquipoVisitante = "Francia",
-            FechaHora = DateTime.UtcNow.AddDays(3),
-            Sede = "MetLife Stadium", GrupoCodigo = "B", Fase = "GRUPOS",
-            Estado = "PROGRAMADO"
-        },
-        new Partido {
-            Id = 3, NumeroPartidoFifa = 3,
-            EquipoLocal = "Alemania", EquipoVisitante = "Portugal",
-            FechaHora = DateTime.UtcNow.AddDays(-1),
-            Sede = "Estadio BC Place", GrupoCodigo = "C", Fase = "GRUPOS",
-            Estado = "FINALIZADO",
-            GolesLocal = 2, GolesVisitante = 1
-        }
-    };
+        private readonly IPartidoService _partidoService;
 
+        public HomeController(IPartidoService partidoService)
+        {
+            _partidoService = partidoService;
+        }
+
+        // Calendario del torneo (página de inicio)
+        public async Task<IActionResult> Index()
+        {
+            var partidos = await _partidoService.ObtenerTodosAsync();
             return View(partidos);
         }
 
@@ -76,7 +57,7 @@ namespace GolMundial.FrontendPublico.Controllers
                     PartidosJugados = 3, Ganados = 1, Empatados = 2, Perdidos = 0,
                     GolesFavor = 4, GolesContra = 2
                 }
-                    };
+            };
 
             return View(estadisticas);
         }
