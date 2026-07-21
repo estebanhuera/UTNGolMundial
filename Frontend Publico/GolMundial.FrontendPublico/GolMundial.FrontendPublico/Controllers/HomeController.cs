@@ -7,10 +7,12 @@ namespace GolMundial.FrontendPublico.Controllers
     public class HomeController : Controller
     {
         private readonly IPartidoService _partidoService;
+        private readonly IPosicionService _posicionService;
 
-        public HomeController(IPartidoService partidoService)
+        public HomeController(IPartidoService partidoService, IPosicionService posicionService)
         {
             _partidoService = partidoService;
+            _posicionService = posicionService;
         }
 
         // Calendario del torneo (página de inicio)
@@ -20,24 +22,9 @@ namespace GolMundial.FrontendPublico.Controllers
             return View(partidos);
         }
 
-        public IActionResult Posiciones()
+        public async Task<IActionResult> Posiciones()
         {
-            var posiciones = new List<Posicion>
-            {
-                new Posicion {
-                    GrupoCodigo = "A", SeleccionId = 1,
-                    CodigoFifa = "ARG", Nombre = "Argentina",
-                    Pj = 3, Pg = 2, Pe = 1, Pp = 0,
-                    Gf = 5, Gc = 1, Dif = 4, Puntos = 7
-                },
-                new Posicion {
-                    GrupoCodigo = "A", SeleccionId = 2,
-                    CodigoFifa = "MEX", Nombre = "México",
-                    Pj = 3, Pg = 1, Pe = 1, Pp = 1,
-                    Gf = 3, Gc = 3, Dif = 0, Puntos = 4
-                }
-            };
-
+            var posiciones = await _posicionService.ObtenerTodasAsync();
             return View(posiciones);
         }
 

@@ -26,6 +26,11 @@ namespace GolMundial.FrontendPublico
             {
                 client.BaseAddress = new Uri(builder.Configuration["ApiBackend:BaseUrl"]!);
             });
+            builder.Services.AddHttpClient<IPosicionService, ApiPosicionService>(client =>
+            {
+                client.BaseAddress = new Uri(builder.Configuration["ApiBackend:BaseUrl"]!);
+            });
+
             var app = builder.Build();
             
             // Configure the HTTP request pipeline.
