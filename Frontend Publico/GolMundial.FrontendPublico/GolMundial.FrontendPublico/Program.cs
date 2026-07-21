@@ -21,7 +21,11 @@ namespace GolMundial.FrontendPublico
             });
 
             builder.Services.AddSingleton<IUsuarioService, FakeUsuarioServices>();
-            builder.Services.AddSingleton<IPartidoService, FakePartidoService>();
+            //builder.Services.AddSingleton<IPartidoService, FakePartidoService>();
+            builder.Services.AddHttpClient<IPartidoService, ApiPartidoService>(client =>
+            {
+                client.BaseAddress = new Uri(builder.Configuration["ApiBackend:BaseUrl"]!);
+            });
             var app = builder.Build();
             
             // Configure the HTTP request pipeline.
