@@ -15,6 +15,7 @@
             <th>Fase</th>
             <th>Estado</th>
             <th>Resultado</th>
+            <th>Predicción</th>
         </tr>
     </thead>
     <tbody>
@@ -49,6 +50,21 @@
                         <span>-</span>
                     }
                 </td>
+                <td>
+                @if (partido.Estado == "PROGRAMADO")
+                {
+                    <a class="btn btn-sm text-white fw-bold"
+                           style="background-color:#0b3d2e;"
+                           asp-controller="Predicciones" asp-action="Nueva"
+                           asp-route-partidoId="@partido.Id">
+                        Predecir
+                    </a>
+                }
+                else
+                {
+                    <span class="text-muted small">—</span>
+                }
+            </td>
             </tr>
         }
     </tbody>

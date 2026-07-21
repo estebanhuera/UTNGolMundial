@@ -1,0 +1,11 @@
+﻿@{
+    ViewData["Title"] = "Nueva predicción";
+}
+
+<div class="alert alert-success mt-4">
+    <h4>¡Llegaste autenticado!</h4>
+    <p class="mb-0">
+        Usuario: <strong>@User.Identity?.Name</strong><br />
+        Partido a predecir: <strong>#@ViewData["PartidoId"]</strong>
+    </p>
+</div>
