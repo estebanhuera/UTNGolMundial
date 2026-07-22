@@ -104,7 +104,10 @@ namespace GolMundial.FrontendPublico.Services
 
             return BonoBienvenida - apostado + devuelto;
         }
-
+        public Task<ResultadoOperacion> RegistrarUsuarioAsync(Usuario usuario)
+        {
+            return Task.FromResult(ResultadoOperacion.Ok());
+        }
         public async Task<int> ObtenerSaldoAsync(int usuarioId)
         {
             return CalcularSaldo(await ObtenerPorUsuarioAsync(usuarioId));

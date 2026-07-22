@@ -40,7 +40,12 @@ namespace GolMundial.FrontendPublico
                 client.BaseAddress = new Uri(builder.Configuration["ApiBackend:BaseUrl"]!);
             });
 
-            builder.Services.AddScoped<IPrediccionService, FakePrediccionService>();
+            builder.Services.AddHttpClient<IPrediccionService, ApiPrediccionService>(client =>
+            {
+                client.BaseAddress = new Uri(builder.Configuration["ApiCoin:BaseUrl"]!);
+            });
+
+            //builder.Services.AddScoped<IPrediccionService, FakePrediccionService>();
             var app = builder.Build();
             
             // Configure the HTTP request pipeline.
@@ -51,7 +56,9 @@ namespace GolMundial.FrontendPublico
                 app.UseHsts();
             }
 
+            // builder.Services.AddScoped<IPrediccionService, FakePrediccionService>();
 
+            
 
             app.UseHttpsRedirection();
             app.UseRouting();

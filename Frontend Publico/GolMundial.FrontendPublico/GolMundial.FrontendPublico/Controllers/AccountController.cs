@@ -10,11 +10,14 @@ namespace GolMundial.FrontendPublico.Controllers
     public class AccountController : Controller
     {
         private readonly IUsuarioService _usuarioService;
+        private readonly IPrediccionService _prediccionService;
 
-        public AccountController(IUsuarioService usuarioService)
+        public AccountController(
+            IUsuarioService usuarioService,
+            IPrediccionService prediccionService)
         {
             _usuarioService = usuarioService;
-            
+            _prediccionService = prediccionService;
         }
 
         [HttpGet]
@@ -27,6 +30,9 @@ namespace GolMundial.FrontendPublico.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginInput input)
         {
+            if (!ModelState.IsValid)
+                return View(input);
+
             var usuario = await _usuarioService.ValidarCredencialesAsync(input.UsuarioOEmail, input.Password);
 
             if (usuario is null)
@@ -40,6 +46,7 @@ namespace GolMundial.FrontendPublico.Controllers
                 ModelState.AddModelError(string.Empty, "Esta cuenta no tiene acceso al sitio público.");
                 return View(input);
             }
+
             await IniciarSesion(usuario);
             return RedirigirA(input.ReturnUrl);
         }
@@ -77,6 +84,14 @@ namespace GolMundial.FrontendPublico.Controllers
                 return View(input);
             }
 
+            var billetera = await _prediccionService.RegistrarUsuarioAsync(usuario);
+
+            if (!billetera.Exito)
+            {
+                ModelState.AddModelError(string.Empty,
+                    "Tu cuenta se creó, pero no se pudo abrir tu billetera de UTNGolCoin. Avisa al administrador.");
+            }
+
             await IniciarSesion(usuario);
             return RedirigirA(input.ReturnUrl);
         }
@@ -95,7 +110,7 @@ namespace GolMundial.FrontendPublico.Controllers
             {
                 new Claim(ClaimTypes.NameIdentifier, usuario.Id.ToString()),
                 new Claim(ClaimTypes.Name, usuario.Username),
-                new Claim(ClaimTypes.Role, usuario.RolNombre),
+                new Claim(ClaimTypes.Role, usuario.RolNombre.ToUpperInvariant()),
                 new Claim("NombreCompleto", usuario.Nombre)
             };
 
