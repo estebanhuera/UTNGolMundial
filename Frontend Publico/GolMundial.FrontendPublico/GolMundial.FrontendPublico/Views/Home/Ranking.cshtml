@@ -1,9 +1,64 @@
-﻿@{
+﻿@model List<RankingItem>
+@{
     ViewData["Title"] = "Ranking";
+    var yo = User.Identity?.Name;
 }
 
-<h2 class="mb-4">Ranking de Usuarios</h2>
+<h2 class="mb-1">Ranking de jugadores</h2>
+<p class="text-muted">Ordenado por saldo de UTNGolCoin.</p>
 
-<div class="alert alert-info">
-    El ranking se va a poblar cuando esté disponible el servicio de predicciones/UTNGolCoin.
-</div>
+@if (!Model.Any())
+{
+    <div class="alert alert-info">Todavía no hay jugadores registrados.</div>
+}
+else
+{
+    <div class="tabla-card">
+        <div class="tabla-card__titulo">Clasificación general</div>
+        <table class="table mb-0">
+            <thead>
+                <tr>
+                    <th style="width:70px;">#</th>
+                    <th>Jugador</th>
+                    <th class="text-center">Apuestas</th>
+                    <th class="text-center">Aciertos</th>
+                    <th class="text-end">Saldo</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr class="@(item.Username == yo ? "table-warning" : "")">
+                        <td class="fw-bold">
+                            @switch (item.Posicion)
+                            {
+                                case 1:
+                                    <span>🥇</span>
+                                    break;
+                                case 2:
+
+                                    <span>🥈</span>
+                                    break;
+                                case 3:
+
+                                    <span>🥉</span>
+                                    break;
+                                default:
+
+                                    <span>@item.Posicion</span>
+                                    break;
+                            }
+                        </td>
+                        <td>
+                            <strong>@item.Username</strong>
+                            <div class="text-muted small">@item.Nombre</div>
+                        </td>
+                        <td class="text-center">@item.Apuestas</td>
+                        <td class="text-center">@item.Aciertos</td>
+                        <td class="text-end fw-bold">@item.Saldo UGC</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

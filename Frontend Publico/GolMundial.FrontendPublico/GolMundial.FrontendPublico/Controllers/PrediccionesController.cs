@@ -6,7 +6,7 @@ using System.Security.Claims;
 
 namespace GolMundial.FrontendPublico.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "USUARIO")]
     public class PrediccionesController : Controller
     {
         private readonly IPartidoService _partidoService;

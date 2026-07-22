@@ -8,8 +8,8 @@
     <div class="col-md-7">
         <div class="card shadow-sm">
             <div class="card-header text-white fw-bold d-flex justify-content-between"
-                 style="background-color:#0b3d2e;">
-                <span>Predecir partido</span>
+                 style="background-color:var(--mundial-principal);">
+                <span>⚽ Predecir partido</span>
                 <span>Saldo: @Model.Saldo UGC</span>
             </div>
             <div class="card-body">
@@ -45,7 +45,7 @@
                             <input type="radio" class="btn-check" asp-for="Input.ResultadoPredicho"
                                    value="Empate" id="opEmpate" />
                             <label class="btn btn-outline-dark w-100 py-3" for="opEmpate">
-                                <div class="fs-5"></div>
+                                <div class="fs-5">🤝</div>
                                 <div class="small mt-1">Empate</div>
                             </label>
                         </div>
@@ -72,10 +72,7 @@
                         </div>
                     </div>
 
-                    <button type="submit" class="btn w-100 text-white fw-bold"
-                            style="background-color:#0b3d2e;">
-                        Confirmar predicción
-                    </button>
+                    <button type="submit" class="btn btn-mundial w-100">Confirmar predicción</button>
                 </form>
             </div>
         </div>

@@ -23,7 +23,10 @@ namespace GolMundial.FrontendPublico.Services
 
             return Task.FromResult<Usuario?>(encontrado is null ? null : AUsuario(encontrado));
         }
-
+        public Task<List<Usuario>> ObtenerTodosAsync()
+        {
+            return Task.FromResult(_usuarios.Select(AUsuario).ToList());
+        }
         public Task<bool> ExisteEmailAsync(string email)
         {
             return Task.FromResult(_usuarios.Any(u =>

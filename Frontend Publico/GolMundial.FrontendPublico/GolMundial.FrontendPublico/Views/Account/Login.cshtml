@@ -6,8 +6,8 @@
 <div class="row justify-content-center mt-4">
     <div class="col-md-5">
         <div class="card shadow-sm">
-            <div class="card-header text-white fw-bold" style="background-color:#0b3d2e;">
-                Iniciar sesión
+            <div class="card-header text-white fw-bold" style="background-color:var(--mundial-principal);">
+                🔐 Iniciar sesión
             </div>
             <div class="card-body">
                 <form asp-action="Login" method="post">
@@ -27,16 +27,13 @@
                         <span asp-validation-for="Password" class="text-danger small"></span>
                     </div>
 
-                    <button type="submit" class="btn w-100 text-white fw-bold"
-                            style="background-color:#0b3d2e;">
-                        Entrar
-                    </button>
+                    <button type="submit" class="btn btn-mundial w-100">Entrar</button>
                 </form>
 
                 <hr />
                 <p class="text-center mb-0">
                     ¿No tienes cuenta?
-                    <a asp-action="Registro" asp-route-returnUrl="@Model.ReturnUrl">Registrate</a>
+                    <a asp-action="Registro" asp-route-returnUrl="@Model.ReturnUrl">Regístrate</a>
                 </p>
             </div>
         </div>

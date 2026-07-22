@@ -14,20 +14,12 @@ namespace GolMundial.FrontendPublico.Services
         private static int _siguienteId = 1;
 
         private readonly IPartidoService _partidoService;
+        private readonly IUsuarioService _usuarioService;
 
-        public FakePrediccionService(IPartidoService partidoService)
+        public FakePrediccionService(IPartidoService partidoService, IUsuarioService usuarioService)
         {
             _partidoService = partidoService;
-        }
-
-        public async Task<int> ObtenerSaldoAsync(int usuarioId)
-        {
-            var mias = await ObtenerPorUsuarioAsync(usuarioId);
-
-            var apostado = mias.Sum(p => p.Monto);
-            var devuelto = mias.Where(p => p.Estado == "Ganada").Sum(p => p.Monto * 2);
-
-            return BonoBienvenida - apostado + devuelto;
+            _usuarioService = usuarioService;
         }
 
         public async Task<MisPredicciones?> ObtenerDelPartidoAsync(int usuarioId, int partidoId)
@@ -104,6 +96,53 @@ namespace GolMundial.FrontendPublico.Services
             dto.Ganancia = acerto ? a.Monto : -a.Monto;
 
             return dto;
+        }
+        private static int CalcularSaldo(List<MisPredicciones> predicciones)
+        {
+            var apostado = predicciones.Sum(p => p.Monto);
+            var devuelto = predicciones.Where(p => p.Estado == "Ganada").Sum(p => p.Monto * 2);
+
+            return BonoBienvenida - apostado + devuelto;
+        }
+
+        public async Task<int> ObtenerSaldoAsync(int usuarioId)
+        {
+            return CalcularSaldo(await ObtenerPorUsuarioAsync(usuarioId));
+        }
+        public async Task<List<RankingItem>> ObtenerRankingAsync()
+        {
+            var usuarios = (await _usuarioService.ObtenerTodosAsync())
+                .Where(u => Roles.EsPublico(u.RolNombre))
+                .ToList();
+            var partidos = await _partidoService.ObtenerTodosAsync();
+
+            var lista = usuarios
+                .Select(u =>
+                {
+                    var suyas = _apuestas
+                        .Where(a => a.UsuarioId == u.Id)
+                        .Select(a => ADto(a, partidos.FirstOrDefault(p => p.Id == a.PartidoId)))
+                        .ToList();
+
+                    return new RankingItem
+                    {
+                        UsuarioId = u.Id,
+                        Username = u.Username,
+                        Nombre = u.Nombre,
+                        Saldo = CalcularSaldo(suyas),
+                        Apuestas = suyas.Count,
+                        Aciertos = suyas.Count(p => p.Estado == "Ganada")
+                    };
+                })
+                .OrderByDescending(r => r.Saldo)
+                .ThenByDescending(r => r.Aciertos)
+                .ThenBy(r => r.Username)
+                .ToList();
+
+            for (var i = 0; i < lista.Count; i++)
+                lista[i].Posicion = i + 1;
+
+            return lista;
         }
     }
 }

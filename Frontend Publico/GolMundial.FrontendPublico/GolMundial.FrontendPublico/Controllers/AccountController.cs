@@ -14,6 +14,7 @@ namespace GolMundial.FrontendPublico.Controllers
         public AccountController(IUsuarioService usuarioService)
         {
             _usuarioService = usuarioService;
+            
         }
 
         [HttpGet]
@@ -26,16 +27,19 @@ namespace GolMundial.FrontendPublico.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginInput input)
         {
-            if (!ModelState.IsValid)
-                return View(input);
-
             var usuario = await _usuarioService.ValidarCredencialesAsync(input.UsuarioOEmail, input.Password);
+
             if (usuario is null)
             {
                 ModelState.AddModelError(string.Empty, "Usuario o contraseña incorrectos");
                 return View(input);
             }
 
+            if (!Roles.EsPublico(usuario.RolNombre))
+            {
+                ModelState.AddModelError(string.Empty, "Esta cuenta no tiene acceso al sitio público.");
+                return View(input);
+            }
             await IniciarSesion(usuario);
             return RedirigirA(input.ReturnUrl);
         }

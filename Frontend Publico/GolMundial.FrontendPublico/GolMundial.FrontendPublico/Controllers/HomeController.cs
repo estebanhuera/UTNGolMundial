@@ -9,14 +9,17 @@ namespace GolMundial.FrontendPublico.Controllers
         private readonly IPartidoService _partidoService;
         private readonly IPosicionService _posicionService;
         private readonly IEstadisticaService _estadisticaService;
+        private readonly IPrediccionService _prediccionService;
         public HomeController(
             IPartidoService partidoService,
             IPosicionService posicionService,
-            IEstadisticaService estadisticaService)
+            IEstadisticaService estadisticaService,
+            IPrediccionService prediccionService)
         {
             _partidoService = partidoService;
             _posicionService = posicionService;
             _estadisticaService = estadisticaService;
+            _prediccionService = prediccionService;
         }
 
         // Calendario del torneo (página de inicio)
@@ -55,9 +58,9 @@ namespace GolMundial.FrontendPublico.Controllers
             return View(estadisticas);
         }
 
-        public IActionResult Ranking()
+        public async Task<IActionResult> Ranking()
         {
-            return View();
+            return View(await _prediccionService.ObtenerRankingAsync());
         }
     }
 }

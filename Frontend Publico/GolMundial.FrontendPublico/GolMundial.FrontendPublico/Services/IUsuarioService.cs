@@ -8,5 +8,6 @@ namespace GolMundial.FrontendPublico.Services
         Task<bool> ExisteEmailAsync(string email);
         Task<bool> ExisteUsernameAsync(string username);
         Task<Usuario?> RegistrarAsync(RegistroInput input);
+        Task<List<Usuario>> ObtenerTodosAsync();
     }
 }

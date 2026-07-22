@@ -1,3 +1,18 @@
+:root {
+    --mundial-violeta: #4A0BC4;
+    --mundial-violeta-claro: #5A0FE0;
+    --mundial-rojo: #E4002B;
+    --mundial-lima: #C8E600;
+    --mundial-verde: #00C853;
+    --mundial-dorado: #F5C542;
+    --mundial-principal: #4A0BC4;
+    --nav-fondo: #2C3E50;
+    --mundial-principal: #2C3E50;
+    --mundial-principal-hover: #1B2A38;
+    --mundial-accion: #E4002B;
+    --mundial-accion-hover: #B80022;
+}
+
 html {
   font-size: 14px;
 }
@@ -202,22 +217,14 @@ body {
 }
 
 .llave-card__predecir {
-    display: block;
-    text-align: center;
-    padding: .35rem;
-    font-size: .7rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: .05em;
-    background: #0b3d2e;
-    color: #fff;
-    text-decoration: none;
+    background: var(--mundial-accion);
 }
 
     .llave-card__predecir:hover {
-        background: #10543f;
+        background: var(--mundial-accion-hover);
         color: #fff;
     }
+
 
 .bracket__tercero {
     margin-top: 1.5rem;
@@ -246,5 +253,119 @@ body {
     margin-top: 0;
 }
 body {
-    background: linear-gradient(rgba(255, 255, 255, .20), rgba(255, 255, 255, .90)), url('../img/fondo.png') center / cover fixed no-repeat;
+    background: linear-gradient(rgba(255, 255, 255, .85), rgba(255, 255, 255, .90)), url('../img/fondo.png') center / cover fixed no-repeat;
+}
+
+
+.navbar-mundial {
+    background-color: var(--nav-fondo);
+    border-bottom: 4px solid transparent;
+    border-image: linear-gradient(90deg, var(--mundial-violeta-claro), var(--mundial-rojo), var(--mundial-lima), var(--mundial-verde)) 1;
+}
+
+    .navbar-mundial .navbar-brand {
+        color: #fff;
+    }
+
+        .navbar-mundial .navbar-brand:hover {
+            color: var(--mundial-dorado);
+        }
+
+    .navbar-mundial .nav-link {
+        color: #fff;
+        font-weight: 600;
+        padding-left: .85rem;
+        padding-right: .85rem;
+        border-bottom: 2px solid transparent;
+    }
+
+        .navbar-mundial .nav-link:hover {
+            color: var(--mundial-lima);
+            border-bottom-color: var(--mundial-lima);
+        }
+
+    .navbar-mundial .nav-usuario {
+        color: var(--mundial-dorado);
+        font-weight: 700;
+    }
+
+    .navbar-mundial form button.nav-link {
+        background: none;
+        border: 0;
+        border-bottom: 2px solid transparent;
+    }
+
+.btn-mundial,
+.btn-mundial:focus {
+    background-color: var(--mundial-principal);
+    border-color: var(--mundial-principal);
+    color: #fff;
+    font-weight: 700;
+}
+
+    .btn-mundial:hover {
+        background-color: var(--mundial-principal-hover);
+        border-color: var(--mundial-principal-hover);
+        color: #fff;
+    }
+
+.btn-accion,
+.btn-accion:focus {
+    background-color: var(--mundial-accion);
+    border-color: var(--mundial-accion);
+    color: #fff;
+    font-weight: 700;
+}
+
+    .btn-accion:hover {
+        background-color: var(--mundial-accion-hover);
+        border-color: var(--mundial-accion-hover);
+        color: #fff;
+    }
+
+.tabla-card {
+    background: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, .06);
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+}
+
+.tabla-card__titulo {
+    padding: .65rem .9rem;
+    background: var(--mundial-principal);
+    color: #fff;
+    font-weight: 700;
+    font-size: .9rem;
+}
+
+.tabla-card table {
+    margin: 0;
+    width: 100%;
+}
+
+.tabla-card thead th {
+    padding: .55rem .75rem;
+    background: #f8f9fa;
+    border-bottom: 1px solid #e9ecef;
+    color: #6c757d;
+    font-size: .68rem;
+    font-weight: 800;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+}
+
+.tabla-card tbody td {
+    padding: .6rem .75rem;
+    border-top: 1px solid #f1f3f5;
+    vertical-align: middle;
+}
+
+.tabla-card tbody tr:first-child td {
+    border-top: 0;
+}
+
+.tabla-card tbody tr:hover {
+    background: #fafbfc;
 }

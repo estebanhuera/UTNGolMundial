@@ -68,8 +68,7 @@ else
                     @if (partido.Estado == "PROGRAMADO")
                     {
                         <div class="partido-card__accion">
-                            <a class="btn btn-sm text-white fw-bold w-100"
-                                   style="background-color:#0b3d2e;"
+                            <a class="btn btn-sm btn-accion w-100"
                                    asp-controller="Predicciones" asp-action="Nueva"
                                    asp-route-partidoId="@partido.Id">
                                 Predecir

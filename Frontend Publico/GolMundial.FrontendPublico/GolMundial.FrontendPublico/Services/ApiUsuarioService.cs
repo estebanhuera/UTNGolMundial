@@ -30,16 +30,20 @@ namespace GolMundial.FrontendPublico.Services
                 return null;
             }
         }
+        public async Task<List<Usuario>> ObtenerTodosAsync()
+        {
+            var dtos = await ObtenerDtosAsync();
+            return dtos.Select(AUsuario).ToList();
+        }
 
         public async Task<bool> ExisteEmailAsync(string email)
         {
-            var usuarios = await ObtenerTodosAsync();
+            var usuarios = await ObtenerDtosAsync();
             return usuarios.Any(u => string.Equals(u.Email, email, StringComparison.OrdinalIgnoreCase));
         }
-
         public async Task<bool> ExisteUsernameAsync(string username)
         {
-            var usuarios = await ObtenerTodosAsync();
+            var usuarios = await ObtenerDtosAsync();
             return usuarios.Any(u => string.Equals(u.Username, username, StringComparison.OrdinalIgnoreCase));
         }
 
@@ -72,7 +76,7 @@ namespace GolMundial.FrontendPublico.Services
             }
         }
 
-        private async Task<List<UsuarioApiDto>> ObtenerTodosAsync()
+        private async Task<List<UsuarioApiDto>> ObtenerDtosAsync()
         {
             try
             {

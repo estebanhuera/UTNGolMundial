@@ -8,5 +8,6 @@ namespace GolMundial.FrontendPublico.Services
         Task<MisPredicciones?> ObtenerDelPartidoAsync(int usuarioId, int partidoId);
         Task<List<MisPredicciones>> ObtenerPorUsuarioAsync(int usuarioId);
         Task<ResultadoOperacion> CrearAsync(int usuarioId, PrediccionInput input);
+        Task<List<RankingItem>> ObtenerRankingAsync();
     }
 }

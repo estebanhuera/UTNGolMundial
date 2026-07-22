@@ -51,6 +51,8 @@ namespace GolMundial.FrontendPublico
                 app.UseHsts();
             }
 
+
+
             app.UseHttpsRedirection();
             app.UseRouting();
 
