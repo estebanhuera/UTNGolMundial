@@ -3,8 +3,8 @@
     public class Usuario
     {
         public int Id { get; set; }
-        public string Username { get; set; }
-        public string Nombre { get; set; }
-        public string RolNombre { get; set; } // "admin", "usuario", etc.
+        public string Username { get; set; } = "";
+        public string Nombre { get; set; } = "";
+        public string RolNombre { get; set; } = ""; // "admin", "usuario", etc.
     }
 }

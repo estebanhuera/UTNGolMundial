@@ -21,7 +21,7 @@ namespace GolMundial.FrontendPublico.Services
             _usuarioService = usuarioService;
         }
 
-        public async Task<ResultadoOperacion> RegistrarUsuarioAsync(Usuario usuario)
+        public async Task<ResultadoOperacion> RegistrarUsuarioAsync(Usuario usuario, string email)
         {
             try
             {
@@ -30,7 +30,7 @@ namespace GolMundial.FrontendPublico.Services
                     Id = usuario.Id,
                     Username = usuario.Username,
                     Nombre = usuario.Nombre,
-                    Email = "",
+                    Email = email,
                     RolId = RolIdUsuario
                 };
 
@@ -131,18 +131,20 @@ namespace GolMundial.FrontendPublico.Services
                 .Where(u => Roles.EsPublico(u.RolNombre))
                 .ToList();
 
+            var billeteras = await ObtenerBilleterasAsync();
             var partidos = await _partidoService.ObtenerTodosAsync();
 
             var tareas = usuarios.Select(async u =>
             {
                 var suyas = await ObtenerPorUsuarioAsync(u.Id, partidos);
+                var billetera = billeteras.FirstOrDefault(b => b.UsuarioId == u.Id);
 
                 return new RankingItem
                 {
                     UsuarioId = u.Id,
                     Username = u.Username,
                     Nombre = u.Nombre,
-                    Saldo = await ObtenerSaldoAsync(u.Id),
+                    Saldo = billetera is null ? 0 : (int)Math.Round(billetera.Saldo),
                     Apuestas = suyas.Count,
                     Aciertos = suyas.Count(p => p.Estado == "Ganada")
                 };
@@ -159,6 +161,7 @@ namespace GolMundial.FrontendPublico.Services
 
             return lista;
         }
+
 
         private async Task<List<PrediccionResponseDto>> ObtenerCrudasAsync(int usuarioId)
         {
@@ -210,6 +213,18 @@ namespace GolMundial.FrontendPublico.Services
                 Estado = estado,
                 Ganancia = ganancia
             };
+        }
+        private async Task<List<BilleteraResponseDto>> ObtenerBilleterasAsync()
+        {
+            try
+            {
+                return await _http.GetFromJsonAsync<List<BilleteraResponseDto>>("billeteras")
+                       ?? new List<BilleteraResponseDto>();
+            }
+            catch (HttpRequestException)
+            {
+                return new List<BilleteraResponseDto>();
+            }
         }
     }
 }

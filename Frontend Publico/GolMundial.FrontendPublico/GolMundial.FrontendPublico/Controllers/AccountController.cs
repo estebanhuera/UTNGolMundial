@@ -84,7 +84,7 @@ namespace GolMundial.FrontendPublico.Controllers
                 return View(input);
             }
 
-            var billetera = await _prediccionService.RegistrarUsuarioAsync(usuario);
+            var billetera = await _prediccionService.RegistrarUsuarioAsync(usuario, input.Email);
 
             if (!billetera.Exito)
             {

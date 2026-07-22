@@ -2,10 +2,10 @@
 {
     public class Posicion
     {
-        public string GrupoCodigo { get; set; }
+        public string GrupoCodigo { get; set; } = "";
         public int SeleccionId { get; set; }
-        public string CodigoFifa { get; set; }
-        public string Nombre { get; set; }
+        public string CodigoFifa { get; set; } = "";
+        public string Nombre { get; set; } = "";
         public int Pj { get; set; }
         public int Pg { get; set; }
         public int Pe { get; set; }
