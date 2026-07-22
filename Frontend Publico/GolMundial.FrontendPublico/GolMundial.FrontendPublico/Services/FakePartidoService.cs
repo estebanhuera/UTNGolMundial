@@ -11,7 +11,7 @@ namespace GolMundial.FrontendPublico.Services
                 EquipoLocal = "Argentina", EquipoVisitante = "Brasil",
                 CodigoFifaLocal = "ARG", CodigoFifaVisitante = "BRA",
                 FechaHora = DateTime.UtcNow.AddDays(2),
-                Sede = "Estadio Azteca", GrupoCodigo = "A", Fase = "GRUPOS",
+                Sede = "Estadio Azteca", GrupoCodigo = "A", Fase = "GRUPOS",FaseCodigo = "GRUPOS",
                 Estado = "PROGRAMADO"
             },
             new Partido {
@@ -19,7 +19,7 @@ namespace GolMundial.FrontendPublico.Services
                 EquipoLocal = "España", EquipoVisitante = "Francia",
                 CodigoFifaLocal = "ESP", CodigoFifaVisitante = "FRA",
                 FechaHora = DateTime.UtcNow.AddDays(3),
-                Sede = "MetLife Stadium", GrupoCodigo = "B", Fase = "GRUPOS",
+                Sede = "MetLife Stadium", GrupoCodigo = "B", Fase = "GRUPOS",FaseCodigo = "GRUPOS",
                 Estado = "PROGRAMADO"
             },
             new Partido {
@@ -27,7 +27,7 @@ namespace GolMundial.FrontendPublico.Services
                 EquipoLocal = "Alemania", EquipoVisitante = "Portugal",
                 CodigoFifaLocal = "GER", CodigoFifaVisitante = "POR",
                 FechaHora = DateTime.UtcNow.AddDays(-1),
-                Sede = "Estadio BC Place", GrupoCodigo = "C", Fase = "GRUPOS",
+                Sede = "Estadio BC Place", GrupoCodigo = "C", Fase = "GRUPOS", FaseCodigo = "GRUPOS",
                 Estado = "FINALIZADO",
                 GolesLocal = 2, GolesVisitante = 1
             }

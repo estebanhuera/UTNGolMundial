@@ -23,7 +23,24 @@ namespace GolMundial.FrontendPublico.Controllers
         public async Task<IActionResult> Index()
         {
             var partidos = await _partidoService.ObtenerTodosAsync();
-            return View(partidos);
+
+            var faseGrupos = partidos
+                .Where(p => p.FaseCodigo == "GRUPOS")
+                .OrderBy(p => p.FechaHora)
+                .ToList();
+
+            return View(faseGrupos);
+        }
+        public async Task<IActionResult> Eliminatorias()
+        {
+            var partidos = await _partidoService.ObtenerTodosAsync();
+
+            var eliminatorias = partidos
+                .Where(p => p.FaseCodigo != "GRUPOS")
+                .OrderBy(p => p.FechaHora)
+                .ToList();
+
+            return View(eliminatorias);
         }
 
         public async Task<IActionResult> Posiciones()

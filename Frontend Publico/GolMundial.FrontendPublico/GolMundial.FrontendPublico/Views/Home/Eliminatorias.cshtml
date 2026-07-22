@@ -1,20 +1,22 @@
 ﻿@model List<Partido>
-
 @{
-    ViewData["Title"] = "Calendario";
+    ViewData["Title"] = "Eliminatorias";
 }
 
-<h2 class="mb-4">Calendario del Mundial 2026</h2>
+<h2 class="mb-4">Fase eliminatoria</h2>
 
 @if (!Model.Any())
 {
-    <div class="alert alert-info">No hay partidos cargados.</div>
+    <div class="alert alert-info">
+        Todavía no hay partidos de eliminatorias cargados. Los cruces se definen
+        cuando termine la fase de grupos.
+    </div>
 }
 else
 {
-    @foreach (var grupo in Model.GroupBy(p => p.GrupoCodigo).OrderBy(g => g.Key))
+    @foreach (var fase in Model.GroupBy(p => p.Fase))
     {
-        <h4 class="mt-4 mb-3">Grupo @grupo.Key</h4>
+        <h4 class="mt-4 mb-3">@fase.Key</h4>
 
         <table class="table table-striped table-hover">
             <thead class="table-dark">
@@ -28,7 +30,7 @@ else
                 </tr>
             </thead>
             <tbody>
-                @foreach (var partido in grupo)
+                @foreach (var partido in fase)
                 {
                     <tr>
                         <td>@partido.FechaHora.ToLocalTime().ToString("dd/MM/yyyy HH:mm")</td>

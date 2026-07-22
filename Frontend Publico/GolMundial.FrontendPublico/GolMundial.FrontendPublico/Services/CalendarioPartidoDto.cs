@@ -7,6 +7,7 @@
         public DateTime FechaPartido { get; set; }
         public string Estado { get; set; } = "";
         public string FaseNombre { get; set; } = "";
+        public string FaseCodigo { get; set; } = "";
         public string? GrupoCodigo { get; set; }
         public string SedeNombre { get; set; } = "";
         public string LocalNombre { get; set; } = "";

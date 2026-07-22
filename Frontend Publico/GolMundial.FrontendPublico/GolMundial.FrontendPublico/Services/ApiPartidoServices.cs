@@ -41,6 +41,7 @@ namespace GolMundial.FrontendPublico.Services
             Sede = d.SedeNombre,
             GrupoCodigo = d.GrupoCodigo ?? "",
             Fase = d.FaseNombre,
+            FaseCodigo = d.FaseCodigo,
             Estado = d.Estado,
             GolesLocal = d.GolesLocal,
             GolesVisitante = d.GolesVisitante

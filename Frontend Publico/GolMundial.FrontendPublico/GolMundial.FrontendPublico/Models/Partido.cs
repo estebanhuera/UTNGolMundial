@@ -12,6 +12,7 @@
         public string Sede { get; set; }
         public string GrupoCodigo { get; set; }
         public string Fase { get; set; }
+        public string FaseCodigo { get; set; } = "";
         public string Estado { get; set; } // PROGRAMADO, EN_JUEGO, FINALIZADO, SUSPENDIDO, CANCELADO
         public int? GolesLocal { get; set; }
         public int? GolesVisitante { get; set; }
