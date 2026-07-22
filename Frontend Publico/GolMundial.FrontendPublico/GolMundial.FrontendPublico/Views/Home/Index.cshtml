@@ -33,11 +33,11 @@ else
                     <tr>
                         <td>@partido.FechaHora.ToLocalTime().ToString("dd/MM/yyyy HH:mm")</td>
                         <td>
-                            <span class="text-muted small">@partido.CodigoFifaLocal</span>
+                            <partial name="_Bandera" model="partido.CodigoFifaLocal" />
                             @partido.EquipoLocal
                             <span class="text-muted">vs</span>
+                            <partial name="_Bandera" model="partido.CodigoFifaVisitante" />
                             @partido.EquipoVisitante
-                            <span class="text-muted small">@partido.CodigoFifaVisitante</span>
                         </td>
                         <td>@partido.Sede</td>
                         <td>

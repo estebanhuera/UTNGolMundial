@@ -27,7 +27,10 @@
             @foreach (var pos in grupo.OrderByDescending(p => p.Puntos).ThenByDescending(p => p.Dif))
             {
                 <tr>
-                    <td>@pos.Nombre (@pos.CodigoFifa)</td>
+                    <td>
+                        <partial name="_Bandera" model="pos.CodigoFifa" />
+                        @pos.Nombre (@pos.CodigoFifa)
+                    </td>
                     <td>@pos.Pj</td>
                     <td>@pos.Pg</td>
                     <td>@pos.Pe</td>

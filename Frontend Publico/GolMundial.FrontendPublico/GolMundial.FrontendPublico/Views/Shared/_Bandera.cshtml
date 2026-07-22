@@ -1,0 +1,10 @@
+﻿@model string
+
+@{
+    var iso = Banderas.Iso(Model);
+}
+
+@if (!string.IsNullOrEmpty(iso))
+{
+    <span class="fi fi-@iso" style="margin-right:4px;"></span>
+}
