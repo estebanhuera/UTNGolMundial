@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - GolMundial 2026</title>
+    <title>@ViewData["Title"] -GolMundial 2026</title>
     <script type="importmap"></script>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
@@ -42,7 +42,12 @@
                         @if (User.Identity is not null && User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item">
-                                <span class="nav-link text-white">👤 @User.Identity.Name</span>
+                                <a class="nav-link text-white" asp-controller="Predicciones" asp-action="Mias">
+                                    Mis predicciones
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <span class="nav-link text-white">@User.Identity.Name</span>
                             </li>
                             <li class="nav-item">
                                 <form asp-controller="Account" asp-action="Logout" method="post">

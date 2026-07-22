@@ -1,0 +1,67 @@
+﻿@model List<MisPredicciones>
+@{
+    ViewData["Title"] = "Mis predicciones";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="mb-0">Mis predicciones</h2>
+    <span class="badge fs-6 text-white" style="background-color:#0b3d2e;">
+        Saldo: @ViewData["Saldo"] UGC
+    </span>
+</div>
+
+@if (TempData["Aviso"] is not null)
+{
+    <div class="alert alert-success">@TempData["Aviso"]</div>
+}
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">
+        Todavía no has hecho ninguna predicción.
+        <a asp-controller="Home" asp-action="Index">Ve al calendario</a> y elige un partido.
+    </div>
+}
+else
+{
+    <table class="table table-hover align-middle">
+        <thead class="table-dark">
+            <tr>
+                <th>Partido</th>
+                <th>Fecha</th>
+                <th>Tu predicción</th>
+                <th class="text-end">Monto</th>
+                <th>Estado</th>
+                <th class="text-end">Resultado</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var pred in Model)
+            {
+                <tr>
+                    <td>@pred.PartidoDescripcion</td>
+                    <td>@pred.FechaPartido.ToLocalTime().ToString("dd/MM/yyyy HH:mm")</td>
+                    <td>@pred.ResultadoPredicho</td>
+                    <td class="text-end">@pred.Monto UGC</td>
+                    <td>
+                        @switch (pred.Estado)
+                        {
+                            case "Ganada":
+                                <span class="badge bg-success">Ganada</span>
+                                break;
+                            case "Perdida":
+                                <span class="badge bg-danger">Perdida</span>
+                                break;
+                            default:
+                                <span class="badge bg-secondary">Pendiente</span>
+                                break;
+                        }
+                    </td>
+                    <td class="text-end fw-bold @(pred.Ganancia > 0 ? "text-success" : pred.Ganancia < 0 ? "text-danger" : "text-muted")">
+                        @(pred.Ganancia > 0 ? $"+{pred.Ganancia}" : pred.Ganancia < 0 ? pred.Ganancia.ToString() : "—")
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

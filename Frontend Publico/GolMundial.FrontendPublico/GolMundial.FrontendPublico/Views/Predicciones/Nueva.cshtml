@@ -1,22 +1,87 @@
-﻿@model Partido
+﻿@model PrediccionFormViewModel
 @{
     ViewData["Title"] = "Nueva predicción";
+    var p = Model.Partido;
 }
 
-<div class="card shadow-sm mt-4">
-    <div class="card-header text-white fw-bold" style="background-color:#0b3d2e;">
-        Predecir partido
-    </div>
-    <div class="card-body">
-        <h4 class="mb-3">@Model.EquipoLocal vs @Model.EquipoVisitante</h4>
+<div class="row justify-content-center mt-4">
+    <div class="col-md-7">
+        <div class="card shadow-sm">
+            <div class="card-header text-white fw-bold d-flex justify-content-between"
+                 style="background-color:#0b3d2e;">
+                <span>Predecir partido</span>
+                <span>Saldo: @Model.Saldo UGC</span>
+            </div>
+            <div class="card-body">
 
-        <p class="mb-1"><strong>Fecha:</strong> @Model.FechaHora.ToLocalTime().ToString("dd/MM/yyyy HH:mm")</p>
-        <p class="mb-1"><strong>Sede:</strong> @Model.Sede</p>
-        <p class="mb-3"><strong>Fase:</strong> @Model.Fase — Grupo @Model.GrupoCodigo</p>
+                <div class="text-center mb-2">
+                    <partial name="_Bandera" model="p.CodigoFifaLocal" />
+                    <strong>@p.EquipoLocal</strong>
+                    <span class="text-muted mx-2">vs</span>
+                    <partial name="_Bandera" model="p.CodigoFifaVisitante" />
+                    <strong>@p.EquipoVisitante</strong>
+                </div>
 
-        <div class="alert alert-info mb-0">
-            El formulario de predicción queda pendiente hasta tener el backend de apuestas.
-            Sesión activa como <strong>@User.Identity?.Name</strong>.
+                <p class="text-center text-muted small mb-4">
+                    @p.FechaHora.ToLocalTime().ToString("dd/MM/yyyy HH:mm") · @p.Sede
+                </p>
+
+                <form asp-action="Nueva" method="post">
+                    <input type="hidden" asp-for="Input.PartidoId" />
+
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2"></div>
+
+                    <label class="form-label fw-bold">¿Quién gana?</label>
+                    <div class="row g-2 mb-1">
+                        <div class="col-4">
+                            <input type="radio" class="btn-check" asp-for="Input.ResultadoPredicho"
+                                   value="Local" id="opLocal" />
+                            <label class="btn btn-outline-dark w-100 py-3" for="opLocal">
+                                <partial name="_Bandera" model="p.CodigoFifaLocal" />
+                                <div class="small mt-1">@p.EquipoLocal</div>
+                            </label>
+                        </div>
+                        <div class="col-4">
+                            <input type="radio" class="btn-check" asp-for="Input.ResultadoPredicho"
+                                   value="Empate" id="opEmpate" />
+                            <label class="btn btn-outline-dark w-100 py-3" for="opEmpate">
+                                <div class="fs-5"></div>
+                                <div class="small mt-1">Empate</div>
+                            </label>
+                        </div>
+                        <div class="col-4">
+                            <input type="radio" class="btn-check" asp-for="Input.ResultadoPredicho"
+                                   value="Visitante" id="opVisitante" />
+                            <label class="btn btn-outline-dark w-100 py-3" for="opVisitante">
+                                <partial name="_Bandera" model="p.CodigoFifaVisitante" />
+                                <div class="small mt-1">@p.EquipoVisitante</div>
+                            </label>
+                        </div>
+                    </div>
+                    <span asp-validation-for="Input.ResultadoPredicho" class="text-danger small"></span>
+
+                    <div class="mt-4 mb-3">
+                        <label asp-for="Input.Monto" class="form-label fw-bold">
+                            ¿Cuánto apuestas? (UTNGolCoin)
+                        </label>
+                        <input asp-for="Input.Monto" class="form-control" type="number"
+                               min="1" max="@Model.Saldo" value="1" />
+                        <span asp-validation-for="Input.Monto" class="text-danger small"></span>
+                        <div class="form-text">
+                            Si aciertas, recibes el doble. Si fallas, pierdes lo apostado.
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn w-100 text-white fw-bold"
+                            style="background-color:#0b3d2e;">
+                        Confirmar predicción
+                    </button>
+                </form>
+            </div>
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
