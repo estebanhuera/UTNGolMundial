@@ -37,7 +37,7 @@ namespace GolMundial.FrontendPublico.Controllers
 
             var eliminatorias = partidos
                 .Where(p => p.FaseCodigo != "GRUPOS")
-                .OrderBy(p => p.FechaHora)
+                .OrderBy(p => p.NumeroPartidoFifa)
                 .ToList();
 
             return View(eliminatorias);

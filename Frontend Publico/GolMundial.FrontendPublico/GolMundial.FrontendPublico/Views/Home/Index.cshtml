@@ -1,7 +1,9 @@
-﻿@model List<Partido>
+﻿@using System.Globalization
+@model List<Partido>
 
 @{
     ViewData["Title"] = "Calendario";
+    var cultura = new CultureInfo("es-EC");
 }
 
 <h2 class="mb-4">Calendario del Mundial 2026</h2>
@@ -16,72 +18,66 @@ else
     {
         <h4 class="mt-4 mb-3">Grupo @grupo.Key</h4>
 
-        <table class="table table-striped table-hover">
-            <thead class="table-dark">
-                <tr>
-                    <th>Fecha</th>
-                    <th>Partido</th>
-                    <th>Sede</th>
-                    <th>Estado</th>
-                    <th>Resultado</th>
-                    <th>Predicción</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var partido in grupo)
-                {
-                    <tr>
-                        <td>@partido.FechaHora.ToLocalTime().ToString("dd/MM/yyyy HH:mm")</td>
-                        <td>
+        <div class="partidos-grid">
+            @foreach (var partido in grupo)
+            {
+                var fecha = partido.FechaHora.ToLocalTime();
+
+                <div class="partido-card">
+                    <div class="partido-card__top">
+                        <span>@fecha.ToString("ddd d/M", cultura).ToUpper(cultura)</span>
+                        <span>
+                            @switch (partido.Estado)
+                            {
+                                case "FINALIZADO":
+                                    @:FINALIZADO
+                                    break;
+                                case "EN_JUEGO":
+                                    @:EN JUEGO
+                                    break;
+                                default:
+                                    @:PROGRAMADO
+                                    break;
+                            }
+                        </span>
+                    </div>
+
+                    <div class="partido-card__cuerpo">
+                        <div class="partido-card__equipo">
                             <partial name="_Bandera" model="partido.CodigoFifaLocal" />
-                            @partido.EquipoLocal
-                            <span class="text-muted">vs</span>
+                            <div class="partido-card__nombre">@partido.EquipoLocal</div>
+                        </div>
+
+                        @if (partido.Estado == "FINALIZADO")
+                        {
+                            <div class="partido-card__marcador">
+                                @partido.GolesLocal &ndash; @partido.GolesVisitante
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="partido-card__hora">@fecha.ToString("HH:mm")</div>
+                        }
+
+                        <div class="partido-card__equipo">
                             <partial name="_Bandera" model="partido.CodigoFifaVisitante" />
-                            @partido.EquipoVisitante
-                        </td>
-                        <td>@partido.Sede</td>
-                        <td>
-                            @if (partido.Estado == "FINALIZADO")
-                            {
-                                <span class="badge bg-secondary">Finalizado</span>
-                            }
-                            else if (partido.Estado == "EN_JUEGO")
-                            {
-                                <span class="badge bg-danger">En juego</span>
-                            }
-                            else
-                            {
-                                <span class="badge bg-success">Programado</span>
-                            }
-                        </td>
-                        <td>
-                            @if (partido.Estado == "FINALIZADO")
-                            {
-                                @($"{partido.GolesLocal} - {partido.GolesVisitante}")
-                            }
-                            else
-                            {
-                                <span>-</span>
-                            }
-                        </td>
-                        <td>
-                            @if (partido.Estado == "PROGRAMADO")
-                            {
-                                <a class="btn btn-sm text-white fw-bold"
-                                       style="background-color:#0b3d2e;"
-                                       asp-controller="Predicciones" asp-action="Nueva"
-                                       asp-route-partidoId="@partido.Id">
-                                    Predecir
-                                </a>
-                            }
-                            else
-                            {
-                                <span class="text-muted small">—</span>
-                            }
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+                            <div class="partido-card__nombre">@partido.EquipoVisitante</div>
+                        </div>
+                    </div>
+
+                    @if (partido.Estado == "PROGRAMADO")
+                    {
+                        <div class="partido-card__accion">
+                            <a class="btn btn-sm text-white fw-bold w-100"
+                                   style="background-color:#0b3d2e;"
+                                   asp-controller="Predicciones" asp-action="Nueva"
+                                   asp-route-partidoId="@partido.Id">
+                                Predecir
+                            </a>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
     }
 }

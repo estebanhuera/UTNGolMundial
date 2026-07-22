@@ -1,0 +1,46 @@
+﻿@using System.Globalization
+@model Partido
+
+@{
+    var cultura = new CultureInfo("es-EC");
+    var fecha = Model.FechaHora.ToLocalTime();
+
+    var estado = Model.Estado switch
+    {
+        "FINALIZADO" => "Finalizado",
+        "EN_JUEGO" => "En juego",
+        "SUSPENDIDO" => "Suspendido",
+        "CANCELADO" => "Cancelado",
+        _ => "Programado"
+    };
+
+    var finalizado = Model.Estado == "FINALIZADO";
+    var ganaLocal = finalizado && Model.GolesLocal > Model.GolesVisitante;
+    var ganaVisitante = finalizado && Model.GolesVisitante > Model.GolesLocal;
+}
+
+<div class="llave-card">
+    <div class="llave-card__top">
+        <span>@fecha.ToString("dd/MM HH:mm", cultura)</span>
+        <span>@estado</span>
+    </div>
+
+    <div class="llave-card__equipo @(ganaLocal ? "llave-card__equipo--gana" : "")">
+        <partial name="_Bandera" model="Model.CodigoFifaLocal" />
+        <span class="llave-card__nombre">@Model.EquipoLocal</span>
+        <span class="llave-card__goles">@(finalizado ? Model.GolesLocal?.ToString() : "-")</span>
+    </div>
+
+    <div class="llave-card__equipo @(ganaVisitante ? "llave-card__equipo--gana" : "")">
+        <partial name="_Bandera" model="Model.CodigoFifaVisitante" />
+        <span class="llave-card__nombre">@Model.EquipoVisitante</span>
+        <span class="llave-card__goles">@(finalizado ? Model.GolesVisitante?.ToString() : "-")</span>
+    </div>
+
+    @if (Model.Estado == "PROGRAMADO")
+    {
+        <a class="llave-card__predecir"
+           asp-controller="Predicciones" asp-action="Nueva"
+           asp-route-partidoId="@Model.Id">Predecir</a>
+    }
+</div>

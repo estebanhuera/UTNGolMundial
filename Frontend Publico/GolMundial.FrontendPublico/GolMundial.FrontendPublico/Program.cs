@@ -34,6 +34,8 @@ namespace GolMundial.FrontendPublico
             {
                 client.BaseAddress = new Uri(builder.Configuration["ApiBackend:BaseUrl"]!);
             });
+
+            builder.Services.AddScoped<IPrediccionService, FakePrediccionService>();
             var app = builder.Build();
             
             // Configure the HTTP request pipeline.

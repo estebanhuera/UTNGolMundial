@@ -1,6 +1,24 @@
 ﻿@model List<Partido>
+
 @{
     ViewData["Title"] = "Eliminatorias";
+
+    var ordenFases = new[] { "DIECISEISAVOS", "OCTAVOS", "CUARTOS", "SEMIFINAL", "FINAL" };
+
+    var titulos = new Dictionary<string, string>
+    {
+        ["DIECISEISAVOS"] = "16avos de final",
+        ["OCTAVOS"] = "Octavos de final",
+        ["CUARTOS"] = "Cuartos de final",
+        ["SEMIFINAL"] = "Semifinal",
+        ["FINAL"] = "Final",
+        ["TERCER_PUESTO"] = "3.º / 4.º puesto"
+    };
+
+    var tercerPuesto = Model
+        .Where(p => p.FaseCodigo == "TERCER_PUESTO")
+        .OrderBy(p => p.NumeroPartidoFifa)
+        .ToList();
 }
 
 <h2 class="mb-4">Fase eliminatoria</h2>
@@ -14,76 +32,41 @@
 }
 else
 {
-    @foreach (var fase in Model.GroupBy(p => p.Fase))
-    {
-        <h4 class="mt-4 mb-3">@fase.Key</h4>
+    <div class="bracket">
+        @foreach (var codigo in ordenFases)
+        {
+            var partidos = Model
+                .Where(p => p.FaseCodigo == codigo)
+                .OrderBy(p => p.NumeroPartidoFifa)
+                .ToList();
 
-        <table class="table table-striped table-hover">
-            <thead class="table-dark">
-                <tr>
-                    <th>Fecha</th>
-                    <th>Partido</th>
-                    <th>Sede</th>
-                    <th>Estado</th>
-                    <th>Resultado</th>
-                    <th>Predicción</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var partido in fase)
-                {
-                    <tr>
-                        <td>@partido.FechaHora.ToLocalTime().ToString("dd/MM/yyyy HH:mm")</td>
-                        <td>
-                            <partial name="_Bandera" model="partido.CodigoFifaLocal" />
-                            @partido.EquipoLocal
-                            <span class="text-muted">vs</span>
-                            <partial name="_Bandera" model="partido.CodigoFifaVisitante" />
-                            @partido.EquipoVisitante
-                        </td>
-                        <td>@partido.Sede</td>
-                        <td>
-                            @if (partido.Estado == "FINALIZADO")
+            var mostrarTercero = codigo == "FINAL" && tercerPuesto.Any();
+
+            if (!partidos.Any() && !mostrarTercero)
+            {
+                continue;
+            }
+
+            <div class="bracket__fase @(codigo == "FINAL" ? "bracket__fase--final" : "")">
+                <div class="bracket__titulo">@titulos[codigo]</div>
+                <div class="bracket__partidos">
+                    @foreach (var partido in partidos)
+                    {
+                        <partial name="_LlaveCard" model="partido" />
+                    }
+
+                    @if (mostrarTercero)
+                    {
+                        <div class="bracket__tercero">
+                            <div class="bracket__subtitulo">@titulos["TERCER_PUESTO"]</div>
+                            @foreach (var partido in tercerPuesto)
                             {
-                                <span class="badge bg-secondary">Finalizado</span>
+                                <partial name="_LlaveCard" model="partido" />
                             }
-                            else if (partido.Estado == "EN_JUEGO")
-                            {
-                                <span class="badge bg-danger">En juego</span>
-                            }
-                            else
-                            {
-                                <span class="badge bg-success">Programado</span>
-                            }
-                        </td>
-                        <td>
-                            @if (partido.Estado == "FINALIZADO")
-                            {
-                                @($"{partido.GolesLocal} - {partido.GolesVisitante}")
-                            }
-                            else
-                            {
-                                <span>-</span>
-                            }
-                        </td>
-                        <td>
-                            @if (partido.Estado == "PROGRAMADO")
-                            {
-                                <a class="btn btn-sm text-white fw-bold"
-                                       style="background-color:#0b3d2e;"
-                                       asp-controller="Predicciones" asp-action="Nueva"
-                                       asp-route-partidoId="@partido.Id">
-                                    Predecir
-                                </a>
-                            }
-                            else
-                            {
-                                <span class="text-muted small">—</span>
-                            }
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    }
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    </div>
 }
