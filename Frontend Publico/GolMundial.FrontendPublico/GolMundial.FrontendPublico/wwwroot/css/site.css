@@ -217,7 +217,16 @@ body {
 }
 
 .llave-card__predecir {
+    display: block;
+    text-align: center;
+    padding: .35rem;
+    font-size: .7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .05em;
     background: var(--mundial-accion);
+    color: #fff;
+    text-decoration: none;
 }
 
     .llave-card__predecir:hover {
