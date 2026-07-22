@@ -20,7 +20,7 @@ namespace GolMundial.FrontendPublico
                 options.SlidingExpiration = true;
             });
 
-            builder.Services.AddSingleton<IUsuarioService, FakeUsuarioServices>();
+            //builder.Services.AddSingleton<IUsuarioService, FakeUsuarioServices>();
             //builder.Services.AddSingleton<IPartidoService, FakePartidoService>();
             builder.Services.AddHttpClient<IPartidoService, ApiPartidoService>(client =>
             {
@@ -31,6 +31,11 @@ namespace GolMundial.FrontendPublico
                 client.BaseAddress = new Uri(builder.Configuration["ApiBackend:BaseUrl"]!);
             });
             builder.Services.AddHttpClient<IEstadisticaService, ApiEstadisticaService>(client =>
+            {
+                client.BaseAddress = new Uri(builder.Configuration["ApiBackend:BaseUrl"]!);
+            });
+
+            builder.Services.AddHttpClient<IUsuarioService, ApiUsuarioService>(client =>
             {
                 client.BaseAddress = new Uri(builder.Configuration["ApiBackend:BaseUrl"]!);
             });

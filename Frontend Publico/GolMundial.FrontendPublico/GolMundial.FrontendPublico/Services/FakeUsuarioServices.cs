@@ -14,22 +14,29 @@ namespace GolMundial.FrontendPublico.Services
                               RolNombre = "usuario", Email = "juan@utn.com",   Password = "123456" }
         };
 
-        public Usuario? ValidarCredenciales(string email, string password)
+        public Task<Usuario?> ValidarCredencialesAsync(string usuarioOEmail, string password)
         {
             var encontrado = _usuarios.FirstOrDefault(u =>
-                string.Equals(u.Email, email, StringComparison.OrdinalIgnoreCase) &&
+                (string.Equals(u.Username, usuarioOEmail, StringComparison.OrdinalIgnoreCase) ||
+                 string.Equals(u.Email, usuarioOEmail, StringComparison.OrdinalIgnoreCase)) &&
                 u.Password == password);
 
-            return encontrado is null ? null : AUsuario(encontrado);
+            return Task.FromResult<Usuario?>(encontrado is null ? null : AUsuario(encontrado));
         }
 
-        public bool ExisteEmail(string email)
+        public Task<bool> ExisteEmailAsync(string email)
         {
-            return _usuarios.Any(u =>
-                string.Equals(u.Email, email, StringComparison.OrdinalIgnoreCase));
+            return Task.FromResult(_usuarios.Any(u =>
+                string.Equals(u.Email, email, StringComparison.OrdinalIgnoreCase)));
         }
 
-        public Usuario Registrar(RegistroInput input)
+        public Task<bool> ExisteUsernameAsync(string username)
+        {
+            return Task.FromResult(_usuarios.Any(u =>
+                string.Equals(u.Username, username, StringComparison.OrdinalIgnoreCase)));
+        }
+
+        public Task<Usuario?> RegistrarAsync(RegistroInput input)
         {
             var nuevo = new UsuarioFake
             {
@@ -42,7 +49,7 @@ namespace GolMundial.FrontendPublico.Services
             };
 
             _usuarios.Add(nuevo);
-            return AUsuario(nuevo);
+            return Task.FromResult<Usuario?>(AUsuario(nuevo));
         }
 
         private static Usuario AUsuario(UsuarioFake f) => new Usuario

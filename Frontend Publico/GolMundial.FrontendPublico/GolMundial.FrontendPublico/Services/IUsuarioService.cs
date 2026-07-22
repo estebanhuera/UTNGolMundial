@@ -4,8 +4,9 @@ namespace GolMundial.FrontendPublico.Services
 {
     public interface IUsuarioService
     {
-        Usuario? ValidarCredenciales(string email, string password);
-        bool ExisteEmail(string email);
-        Usuario Registrar(RegistroInput input);
+        Task<Usuario?> ValidarCredencialesAsync(string usuarioOEmail, string password);
+        Task<bool> ExisteEmailAsync(string email);
+        Task<bool> ExisteUsernameAsync(string username);
+        Task<Usuario?> RegistrarAsync(RegistroInput input);
     }
 }

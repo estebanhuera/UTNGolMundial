@@ -29,11 +29,10 @@ namespace GolMundial.FrontendPublico.Controllers
             if (!ModelState.IsValid)
                 return View(input);
 
-            var usuario = _usuarioService.ValidarCredenciales(input.Email, input.Password);
-
+            var usuario = await _usuarioService.ValidarCredencialesAsync(input.UsuarioOEmail, input.Password);
             if (usuario is null)
             {
-                ModelState.AddModelError(string.Empty, "Email o contraseña incorrectos");
+                ModelState.AddModelError(string.Empty, "Usuario o contraseña incorrectos");
                 return View(input);
             }
 
@@ -54,13 +53,26 @@ namespace GolMundial.FrontendPublico.Controllers
             if (!ModelState.IsValid)
                 return View(input);
 
-            if (_usuarioService.ExisteEmail(input.Email))
+            if (await _usuarioService.ExisteUsernameAsync(input.Username))
+            {
+                ModelState.AddModelError(nameof(input.Username), "Ese nombre de usuario ya está en uso");
+                return View(input);
+            }
+
+            if (await _usuarioService.ExisteEmailAsync(input.Email))
             {
                 ModelState.AddModelError(nameof(input.Email), "Ya existe una cuenta con ese email");
                 return View(input);
             }
 
-            var usuario = _usuarioService.Registrar(input);
+            var usuario = await _usuarioService.RegistrarAsync(input);
+
+            if (usuario is null)
+            {
+                ModelState.AddModelError(string.Empty, "No se pudo crear la cuenta. Intenta de nuevo.");
+                return View(input);
+            }
+
             await IniciarSesion(usuario);
             return RedirigirA(input.ReturnUrl);
         }
