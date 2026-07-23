@@ -26,12 +26,7 @@ else
                 <div class="partido-card">
                     <div class="partido-card__top">
                         <span>@fecha.ToString("ddd d/M", cultura).ToUpper(cultura)</span>
-                        <span>
-                            <div class="partido-card__top">
-                                <span>@fecha.ToString("ddd d/M", cultura).ToUpper(cultura)</span>
-                                <span>@EstadoPartido.Etiqueta(partido.Estado).ToUpper(cultura)</span>
-                            </div>
-                        </span>
+                        <span>@EstadoPartido.Etiqueta(partido.Estado).ToUpper(cultura)</span>
                     </div>
 
                     <div class="partido-card__cuerpo">
