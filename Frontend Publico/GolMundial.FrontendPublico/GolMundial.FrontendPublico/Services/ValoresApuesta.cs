@@ -9,7 +9,7 @@
         public const string Pendiente = "PENDIENTE";
         public const string Ganada = "GANADA";
         public const string Perdida = "PERDIDA";
-        public static string ADominio(string opcionUi) => opcionUi.ToUpperInvariant() switch
+        public static string ADominio(string opcionUi) => opcionUi.Trim().ToUpperInvariant() switch
         {
             "LOCAL" => Local,
             "EMPATE" => Empate,
@@ -17,19 +17,19 @@
             _ => opcionUi.ToUpperInvariant()
         };
 
-        public static string AEstadoUi(string estadoApi) => estadoApi.ToUpperInvariant() switch
+        public static string AEstadoUi(string estadoApi) => estadoApi.Trim().ToUpperInvariant() switch
         {
             Ganada => "Ganada",
             Perdida => "Perdida",
             _ => "Pendiente"
         };
 
-        public static string AOpcionUi(string tipoApi) => tipoApi.ToUpperInvariant() switch
+        public static string AOpcionUi(string tipoApi) => tipoApi.Trim().ToUpperInvariant() switch
         {
             Local => "Local",
             Empate => "Empate",
             Visitante => "Visitante",
-            _ => tipoApi
+            _ => "Desconocido"
         };
     }
 }
