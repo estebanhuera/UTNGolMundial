@@ -1,20 +1,11 @@
 ﻿@using System.Globalization
 @model Partido
-
 @{
     var cultura = new CultureInfo("es-EC");
     var fecha = Model.FechaHora.ToLocalTime();
 
-    var estado = Model.Estado switch
-    {
-        "FINALIZADO" => "Finalizado",
-        "EN_JUEGO" => "En juego",
-        "SUSPENDIDO" => "Suspendido",
-        "CANCELADO" => "Cancelado",
-        _ => "Programado"
-    };
-
-    var finalizado = Model.Estado == "FINALIZADO";
+    var estado = EstadoPartido.Etiqueta(Model.Estado);
+    var finalizado = EstadoPartido.EstaFinalizado(Model.Estado);
     var ganaLocal = finalizado && Model.GolesLocal > Model.GolesVisitante;
     var ganaVisitante = finalizado && Model.GolesVisitante > Model.GolesLocal;
 }
@@ -37,7 +28,7 @@
         <span class="llave-card__goles">@(finalizado ? Model.GolesVisitante?.ToString() : "-")</span>
     </div>
 
-    @if (Model.Estado == "PROGRAMADO")
+    @if (EstadoPartido.SePuedePredecir(Model.Estado))
     {
         <a class="llave-card__predecir"
            asp-controller="Predicciones" asp-action="Nueva"

@@ -30,7 +30,7 @@ namespace GolMundial.FrontendPublico.Controllers
             if (partido is null)
                 return NotFound();
 
-            if (partido.Estado != "PROGRAMADO")
+            if (!EstadoPartido.SePuedePredecir(partido.Estado))
                 return RedirectToAction("Index", "Home");
 
             if (await _prediccionService.ObtenerDelPartidoAsync(UsuarioId, partidoId) is not null)

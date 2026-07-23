@@ -50,7 +50,7 @@ namespace GolMundial.FrontendPublico.Services
             if (partido is null)
                 return ResultadoOperacion.Falla("El partido no existe.");
 
-            if (partido.Estado != "PROGRAMADO")
+            if (!EstadoPartido.SePuedePredecir(partido.Estado))
                 return ResultadoOperacion.Falla("Este partido ya no admite predicciones.");
 
             if (_apuestas.Any(a => a.UsuarioId == usuarioId && a.PartidoId == input.PartidoId))
@@ -104,10 +104,7 @@ namespace GolMundial.FrontendPublico.Services
 
             return BonoBienvenida - apostado + devuelto;
         }
-        public Task<ResultadoOperacion> RegistrarUsuarioAsync(Usuario usuario, string email)
-        {
-            return Task.FromResult(ResultadoOperacion.Ok());
-        }
+        
         public async Task<int> ObtenerSaldoAsync(int usuarioId)
         {
             return CalcularSaldo(await ObtenerPorUsuarioAsync(usuarioId));

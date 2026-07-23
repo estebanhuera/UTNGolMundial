@@ -10,14 +10,11 @@ namespace GolMundial.FrontendPublico.Controllers
     public class AccountController : Controller
     {
         private readonly IUsuarioService _usuarioService;
-        private readonly IPrediccionService _prediccionService;
 
         public AccountController(
-            IUsuarioService usuarioService,
-            IPrediccionService prediccionService)
+            IUsuarioService usuarioService)
         {
             _usuarioService = usuarioService;
-            _prediccionService = prediccionService;
         }
 
         [HttpGet]
@@ -82,14 +79,6 @@ namespace GolMundial.FrontendPublico.Controllers
             {
                 ModelState.AddModelError(string.Empty, "No se pudo crear la cuenta. Intenta de nuevo.");
                 return View(input);
-            }
-
-            var billetera = await _prediccionService.RegistrarUsuarioAsync(usuario, input.Email);
-
-            if (!billetera.Exito)
-            {
-                ModelState.AddModelError(string.Empty,
-                    "Tu cuenta se creó, pero no se pudo abrir tu billetera de UTNGolCoin. Avisa al administrador.");
             }
 
             await IniciarSesion(usuario);

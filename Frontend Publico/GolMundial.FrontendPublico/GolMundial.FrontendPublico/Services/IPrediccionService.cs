@@ -9,6 +9,6 @@ namespace GolMundial.FrontendPublico.Services
         Task<List<MisPredicciones>> ObtenerPorUsuarioAsync(int usuarioId);
         Task<ResultadoOperacion> CrearAsync(int usuarioId, PrediccionInput input);
         Task<List<RankingItem>> ObtenerRankingAsync();
-        Task<ResultadoOperacion> RegistrarUsuarioAsync(Usuario usuario, string email);
+
     }
 }

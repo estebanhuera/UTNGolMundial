@@ -27,18 +27,10 @@ else
                     <div class="partido-card__top">
                         <span>@fecha.ToString("ddd d/M", cultura).ToUpper(cultura)</span>
                         <span>
-                            @switch (partido.Estado)
-                            {
-                                case "FINALIZADO":
-                                    @:FINALIZADO
-                                    break;
-                                case "EN_JUEGO":
-                                    @:EN JUEGO
-                                    break;
-                                default:
-                                    @:PROGRAMADO
-                                    break;
-                            }
+                            <div class="partido-card__top">
+                                <span>@fecha.ToString("ddd d/M", cultura).ToUpper(cultura)</span>
+                                <span>@EstadoPartido.Etiqueta(partido.Estado).ToUpper(cultura)</span>
+                            </div>
                         </span>
                     </div>
 
@@ -48,7 +40,7 @@ else
                             <div class="partido-card__nombre">@partido.EquipoLocal</div>
                         </div>
 
-                        @if (partido.Estado == "FINALIZADO")
+                        @if (EstadoPartido.EstaFinalizado(partido.Estado))
                         {
                             <div class="partido-card__marcador">
                                 @partido.GolesLocal &ndash; @partido.GolesVisitante
@@ -58,14 +50,13 @@ else
                         {
                             <div class="partido-card__hora">@fecha.ToString("HH:mm")</div>
                         }
-
                         <div class="partido-card__equipo">
                             <partial name="_Bandera" model="partido.CodigoFifaVisitante" />
                             <div class="partido-card__nombre">@partido.EquipoVisitante</div>
                         </div>
                     </div>
 
-                    @if (partido.Estado == "PROGRAMADO")
+                    @if (EstadoPartido.SePuedePredecir(partido.Estado))
                     {
                         <div class="partido-card__accion">
                             <a class="btn btn-sm btn-accion w-100"

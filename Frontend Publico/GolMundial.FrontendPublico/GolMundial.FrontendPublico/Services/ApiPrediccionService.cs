@@ -5,8 +5,6 @@ namespace GolMundial.FrontendPublico.Services
 {
     public class ApiPrediccionService : IPrediccionService
     {
-        private const short RolIdUsuario = 2;
-
         private readonly HttpClient _http;
         private readonly IPartidoService _partidoService;
         private readonly IUsuarioService _usuarioService;
@@ -21,31 +19,7 @@ namespace GolMundial.FrontendPublico.Services
             _usuarioService = usuarioService;
         }
 
-        public async Task<ResultadoOperacion> RegistrarUsuarioAsync(Usuario usuario, string email)
-        {
-            try
-            {
-                var dto = new UsuarioRegistroDto
-                {
-                    Id = usuario.Id,
-                    Username = usuario.Username,
-                    Nombre = usuario.Nombre,
-                    Email = email,
-                    RolId = RolIdUsuario
-                };
-
-                var respuesta = await _http.PostAsJsonAsync("usuarios/registrar", dto);
-                var mensaje = await LeerMensajeAsync(respuesta);
-
-                return respuesta.IsSuccessStatusCode && mensaje?.Exitoso != false
-                    ? ResultadoOperacion.Ok()
-                    : ResultadoOperacion.Falla(mensaje?.Mensaje ?? "No se pudo crear la billetera.");
-            }
-            catch (HttpRequestException)
-            {
-                return ResultadoOperacion.Falla("El servicio de UTNGolCoin no está disponible.");
-            }
-        }
+       
 
         public async Task<int> ObtenerSaldoAsync(int usuarioId)
         {
@@ -91,7 +65,7 @@ namespace GolMundial.FrontendPublico.Services
             if (partido is null)
                 return ResultadoOperacion.Falla("El partido no existe.");
 
-            if (partido.Estado != "PROGRAMADO")
+            if (!EstadoPartido.SePuedePredecir(partido.Estado))
                 return ResultadoOperacion.Falla("Este partido ya no admite predicciones.");
 
             if (await ObtenerDelPartidoAsync(usuarioId, input.PartidoId) is not null)
